@@ -1,10 +1,19 @@
+# matcher.py
 from sentence_transformers import SentenceTransformer, util
 from backend.services.nlp import tfidf_score
 
-model = SentenceTransformer('all-MiniLM-L6-v2') 
+model = None  # don't load yet
+
+def get_model():
+    global model
+    if model is None:
+        model = SentenceTransformer('all-MiniLM-L6-v2')
+    return model
+
 def semantic_score(text1, text2):
-    embeddings1 = model.encode(text1, convert_to_tensor=True)
-    embeddings2 = model.encode(text2, convert_to_tensor=True)
+    m = get_model()
+    embeddings1 = m.encode(text1, convert_to_tensor=True)
+    embeddings2 = m.encode(text2, convert_to_tensor=True)
     cosine_sim = util.pytorch_cos_sim(embeddings1, embeddings2)
     return round(cosine_sim.item() * 100, 2)
 
