@@ -2,11 +2,24 @@ import pdfplumber
 import re
 
 def extract_text_from_pdf(file_path):
-    text = ""
-    with pdfplumber.open(file_path) as pdf:
-        for page in pdf.pages:
-            text += page.extract_text() or ""
-    return text
+    if file_path.lower().endswith('.pdf'):
+        try:
+            text = ""
+            with pdfplumber.open(file_path) as pdf:
+                for page in pdf.pages:
+                    text += page.extract_text() or ""
+            if text.strip():
+                return text
+        except Exception as e:
+            print(f"PDF parsing failed for {file_path}, falling back to text: {e}")
+
+    for encoding in ('utf-8', 'latin-1', 'utf-16'):
+        try:
+            with open(file_path, "r", encoding=encoding) as f:
+                return f.read()
+        except Exception:
+            continue
+    return ""
 
 def extract_email(text):
     match = re.search(r'[\w.-]+@[\w.-]+\.\w+', text)
