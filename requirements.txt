@@ -9,4 +9,4 @@ spacy
 scikit-learn
 sentence-transformers
 python-dotenv
-torch==2.0.1+cpu
+torch==2.9.1+cpu
