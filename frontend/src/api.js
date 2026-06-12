@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://resume-screening-system-6zkl.onrender.com";
 
 export async function analyzeResume(resumeFile, jdFile) {
     const formData = new FormData();
